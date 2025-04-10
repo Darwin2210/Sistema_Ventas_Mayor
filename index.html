@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Punto de Venta</title>
   <style>
     * {
       box-sizing: border-box;
     }
-    body {
+
+    html, body {
       margin: 0;
+      padding: 0;
       font-family: sans-serif;
       background-color: #000;
       color: #fff;
+      height: 100%;
     }
+
     .main {
       display: flex;
-      min-height: 100vh;
       flex-direction: row;
+      min-height: 100vh;
     }
+
     .menu-lateral {
       width: 200px;
       background-color: #111;
@@ -27,10 +32,12 @@
       flex-direction: column;
       justify-content: space-between;
     }
+
     .menu-superior {
       display: flex;
       flex-direction: column;
     }
+
     .menu-lateral button {
       width: 100%;
       padding: 10px;
@@ -41,35 +48,42 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
     .contenido-principal {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
       padding: 20px;
-      overflow: hidden;
+      overflow-x: hidden;
     }
+
     .modulo-principal-ventas {
       display: flex;
       flex-direction: column;
     }
-    .modulo-superior,
-    .modulo-inferior {
+
+    .modulo-superior, .modulo-inferior {
       display: flex;
       gap: 20px;
-      flex-wrap: wrap;
       margin-top: 20px;
+      flex-wrap: wrap;
     }
+
     .modulo {
       background-color: #1e1e1e;
       padding: 15px;
       border-radius: 10px;
-      flex: 1 1 300px;
-      max-height: 400px;
+      flex: 1;
+      min-width: 280px;
+      max-width: 100%;
+      height: 250px;
       overflow-y: auto;
     }
+
     .modulo h2 {
       margin-top: 0;
     }
+
     input[type="text"],
     input[type="number"] {
       width: 100%;
@@ -79,7 +93,9 @@
       border: none;
       background-color: #444;
       color: #fff;
+      box-sizing: border-box;
     }
+
     button {
       background-color: #007bff;
       color: #fff;
@@ -88,67 +104,60 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
       background-color: #2a2a2a;
     }
+
     th, td {
       padding: 8px;
       border: 1px solid #444;
       text-align: left;
     }
+
     th {
       background-color: #333;
     }
+
     .tabla-scroll {
-      max-height: 200px;
+      max-height: 150px;
       overflow-y: auto;
     }
+
     #modulo-productos,
     #modulo-ventas {
       display: none;
     }
 
+    /* Responsivo */
     @media (max-width: 768px) {
       .main {
         flex-direction: column;
       }
+
       .menu-lateral {
         width: 100%;
         flex-direction: row;
         flex-wrap: wrap;
-        padding: 10px;
-        justify-content: center;
-        gap: 10px;
+        align-items: center;
+        justify-content: space-around;
       }
-      .menu-superior {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-      .menu-lateral button {
-        flex: 1 1 150px;
-      }
+
       .contenido-principal {
         padding: 10px;
       }
-      .modulo {
-        max-height: none;
-      }
-    }
 
-    @media (max-width: 480px) {
       .modulo-superior,
       .modulo-inferior {
         flex-direction: column;
+        gap: 10px;
       }
-      .menu-superior {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .menu-lateral button {
-        width: 100%;
+
+      .modulo {
+        height: auto;
+        max-height: 300px;
       }
     }
   </style>
@@ -161,13 +170,13 @@
         <button onclick="mostrarModulo('productos')">Registrar Productos</button>
         <button onclick="agregarBase()">Añadir Base del Día</button>
       </div>
-      <button onclick="limpiarDatos()" style="background-color: red;">🗑 Limpiar Datos</button>
+      <button onclick="limpiarDatos()" style="background-color: red; margin-top: 20px;">🗑 Limpiar Datos</button>
     </div>
     <div class="contenido-principal">
       <div id="modulo-productos" class="modulo">
         <h2>Registrar Producto</h2>
-        <input id="nombreProducto" type="text" placeholder="Nombre del Producto" />
-        <input id="marcaProducto" type="text" placeholder="Marca" />
+        <input id="nombreProducto" type="text" placeholder="Nombre del Producto">
+        <input id="marcaProducto" type="text" placeholder="Marca">
         <button onclick="guardarProducto()">Guardar Producto</button>
       </div>
 
@@ -175,9 +184,9 @@
         <div class="modulo-superior">
           <div class="modulo">
             <h2>Registrar Venta</h2>
-            <input id="ventaProducto" type="text" placeholder="Nombre del Producto" list="productosList" />
-            <input id="ventaCantidad" type="number" placeholder="Cantidad" />
-            <input id="ventaPrecio" type="number" placeholder="Precio de Venta" />
+            <input id="ventaProducto" type="text" placeholder="Nombre del Producto" list="productosList">
+            <input id="ventaCantidad" type="number" placeholder="Cantidad">
+            <input id="ventaPrecio" type="number" placeholder="Precio de Venta">
             <button onclick="guardarVenta()">Guardar Venta</button>
           </div>
           <div class="modulo">
@@ -199,19 +208,18 @@
             </div>
           </div>
         </div>
-
         <div class="modulo-inferior">
           <div class="modulo">
             <h2>Registrar Compra</h2>
-            <input id="compraProducto" type="text" placeholder="Nombre del Producto" list="productosList" />
-            <input id="compraCantidad" type="number" placeholder="Cantidad" />
-            <input id="compraPrecio" type="number" placeholder="Precio" />
+            <input id="compraProducto" type="text" placeholder="Nombre del Producto" list="productosList">
+            <input id="compraCantidad" type="number" placeholder="Cantidad">
+            <input id="compraPrecio" type="number" placeholder="Precio">
             <button onclick="guardarCompra()">Guardar Compra</button>
           </div>
           <div class="modulo">
             <h2>Registrar Gasto</h2>
-            <input id="gastoDescripcion" type="text" placeholder="Descripción del Gasto" />
-            <input id="gastoMonto" type="number" placeholder="Monto del Gasto" />
+            <input id="gastoDescripcion" type="text" placeholder="Descripción del Gasto">
+            <input id="gastoMonto" type="number" placeholder="Monto del Gasto">
             <button onclick="guardarGasto()">Guardar Gasto</button>
           </div>
           <div class="modulo" id="modulo-liquidacion">
@@ -229,7 +237,6 @@
     </div>
   </div>
 
-  <!-- Scripts JS -->
   <script>
     let productos = JSON.parse(localStorage.getItem('productos')) || [];
     let ventas = JSON.parse(localStorage.getItem('ventas')) || [];
@@ -288,104 +295,4 @@
     function guardarVenta() {
       const nombre = document.getElementById('ventaProducto').value.trim();
       const cantidad = parseInt(document.getElementById('ventaCantidad').value);
-      const precio = parseFloat(document.getElementById('ventaPrecio').value);
-      if (!nombre || isNaN(cantidad) || isNaN(precio)) return;
-      const producto = productos.find(p => p.nombre === nombre);
-      if (!producto || producto.cantidad < cantidad) {
-        alert('No hay suficiente inventario.');
-        return;
-      }
-      producto.cantidad -= cantidad;
-      ventas.push({ nombre, cantidad, precio });
-      localStorage.setItem('productos', JSON.stringify(productos));
-      localStorage.setItem('ventas', JSON.stringify(ventas));
-      renderizarInventario();
-      renderizarVentasDelDia();
-      actualizarLiquidacion();
-    }
-
-    function guardarCompra() {
-      const nombre = document.getElementById('compraProducto').value.trim();
-      const cantidad = parseInt(document.getElementById('compraCantidad').value);
-      const precio = parseFloat(document.getElementById('compraPrecio').value);
-      if (!nombre || isNaN(cantidad) || isNaN(precio)) return;
-      let producto = productos.find(p => p.nombre === nombre);
-      if (producto) {
-        producto.cantidad += cantidad;
-        producto.precio = precio;
-      } else {
-        producto = { nombre, marca: '', cantidad, precio };
-        productos.push(producto);
-      }
-      compras.push({ nombre, cantidad, precio });
-      localStorage.setItem('productos', JSON.stringify(productos));
-      localStorage.setItem('compras', JSON.stringify(compras));
-      renderizarInventario();
-      actualizarDatalist();
-      actualizarLiquidacion();
-    }
-
-    function guardarGasto() {
-      const descripcion = document.getElementById('gastoDescripcion').value.trim();
-      const monto = parseFloat(document.getElementById('gastoMonto').value);
-      if (!descripcion || isNaN(monto)) return;
-      gastos.push({ descripcion, monto });
-      localStorage.setItem('gastos', JSON.stringify(gastos));
-      document.getElementById('gastoDescripcion').value = '';
-      document.getElementById('gastoMonto').value = '';
-      actualizarLiquidacion();
-    }
-
-    function renderizarInventario() {
-      const tbody = document.getElementById('tabla-inventario');
-      tbody.innerHTML = '';
-      productos.forEach(p => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${p.nombre}</td><td>${p.marca}</td><td>${p.cantidad}</td><td>${p.precio}</td>`;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function renderizarVentasDelDia() {
-      const tbody = document.getElementById('tabla-ventas-dia');
-      tbody.innerHTML = '';
-      ventas.forEach(v => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${v.nombre}</td><td>${v.cantidad}</td><td>${v.precio}</td>`;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function actualizarLiquidacion() {
-      const totalVentas = ventas.reduce((total, v) => total + (v.cantidad * v.precio), 0);
-      const totalCompras = compras.reduce((total, c) => total + (c.cantidad * c.precio), 0);
-      const totalGastos = gastos.reduce((total, g) => total + g.monto, 0);
-      const balance = baseInicial + totalVentas - totalCompras - totalGastos;
-      const tbody = document.getElementById('tabla-liquidacion');
-      tbody.innerHTML = '';
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${baseInicial}</td>
-        <td>${totalVentas}</td>
-        <td>${totalCompras}</td>
-        <td>${totalGastos}</td>
-        <td>${balance}</td>
-      `;
-      tbody.appendChild(tr);
-    }
-
-    function limpiarDatos() {
-      localStorage.clear();
-      productos = [];
-      ventas = [];
-      gastos = [];
-      compras = [];
-      baseInicial = 0;
-      renderizarInventario();
-      renderizarVentasDelDia();
-      actualizarLiquidacion();
-      actualizarDatalist();
-    }
-  </script>
-</body>
-</html>
+      const precio = parseFloat(document.getElementById('venta
