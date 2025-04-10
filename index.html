@@ -1,40 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Punto de Venta</title>
   <style>
-    /* Estilo base del body */
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
       font-family: sans-serif;
       background-color: #000;
       color: #fff;
     }
-
-    /* Contenedor principal */
     .main {
       display: flex;
       flex-direction: row;
-      flex-wrap: nowrap;
       min-height: 100vh;
+      flex-wrap: nowrap;
     }
-
-    /* Menú lateral izquierdo */
     .menu-lateral {
       width: 200px;
       background-color: #111;
       padding: 20px;
-      box-sizing: border-box;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
-
-    /* Botones del menú */
+    .menu-superior {
+      display: flex;
+      flex-direction: column;
+    }
     .menu-lateral button {
-      display: block;
       width: 100%;
       padding: 10px;
       margin-bottom: 10px;
@@ -44,56 +42,39 @@
       border-radius: 5px;
       cursor: pointer;
     }
-
-    /* Área principal de contenido */
     .contenido-principal {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
       padding: 20px;
-      box-sizing: border-box;
       overflow: hidden;
     }
-
-    /* Modulo contenedor para registrar ventas y otros */
     .modulo-principal-ventas {
       display: flex;
       flex-direction: column;
-      overflow: hidden;
     }
-
-    /* Secciones internas */
-    .modulo-superior, .modulo-inferior {
+    .modulo-superior,
+    .modulo-inferior {
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
       margin-top: 20px;
     }
-
-    /* Estilo de cada módulo (formularios) */
     .modulo {
       background-color: #1e1e1e;
       padding: 15px;
       border-radius: 10px;
       flex: 1;
-      min-width: 280px;
-      max-width: 100%;
-      height: 250px;
+      min-width: 300px;
+      height: 350px;
       overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
     }
-
     .modulo h2 {
       margin-top: 0;
     }
-
-    /* Estilos de los campos de entrada */
     input[type="text"],
     input[type="number"] {
       width: 100%;
-      height: 40px;
       padding: 10px;
       margin-bottom: 10px;
       border-radius: 5px;
@@ -101,19 +82,10 @@
       background-color: #444;
       color: #fff;
       font-size: 16px;
-      box-sizing: border-box;
-      outline: none;
-      transition: none;
     }
-
-    input[type="text"]:focus,
-    input[type="number"]:focus {
+    input:focus {
       outline: none;
-      box-shadow: none;
-      border: none;
     }
-
-    /* Botones generales */
     button {
       background-color: #007bff;
       color: #fff;
@@ -122,60 +94,62 @@
       border-radius: 5px;
       cursor: pointer;
     }
-
-    /* Tablas */
     table {
       width: 100%;
       border-collapse: collapse;
       background-color: #2a2a2a;
     }
-
     th, td {
       padding: 8px;
       border: 1px solid #444;
       text-align: left;
     }
-
     th {
       background-color: #333;
     }
-
-    /* Contenedor de tabla con scroll */
     .tabla-scroll {
       max-height: 200px;
       overflow-y: auto;
     }
-
-    /* Módulos ocultos inicialmente */
     #modulo-productos,
     #modulo-ventas {
       display: none;
     }
 
-    /* Estilos responsivos */
+    /* Responsive */
     @media (max-width: 768px) {
       .main {
         flex-direction: column;
       }
-
       .menu-lateral {
         width: 100%;
         flex-direction: row;
-        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-around;
       }
+    }
 
-      .contenido-principal {
-        padding: 10px;
-      }
-
-      .modulo-superior, .modulo-inferior {
-        flex-direction: column;
-      }
+    /* Mensaje flotante */
+    .mensaje {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #111;
+      border: 2px solid #00ff00;
+      padding: 20px 30px;
+      border-radius: 10px;
+      color: #00ff00;
+      font-size: 18px;
+      z-index: 1000;
+      display: none;
+      box-shadow: 0 0 10px #00ff00;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <!-- Interfaz gráfica -->
   <div class="main">
     <div class="menu-lateral">
       <div class="menu-superior">
@@ -203,7 +177,6 @@
             <input id="ventaPrecio" type="number" placeholder="Precio de Venta">
             <button onclick="guardarVenta()">Guardar Venta</button>
           </div>
-
           <div class="modulo">
             <h2>Inventario Disponible</h2>
             <div class="tabla-scroll">
@@ -213,7 +186,6 @@
               </table>
             </div>
           </div>
-
           <div class="modulo">
             <h2>Ventas del Día</h2>
             <div class="tabla-scroll">
@@ -224,7 +196,6 @@
             </div>
           </div>
         </div>
-
         <div class="modulo-inferior">
           <div class="modulo">
             <h2>Registrar Compra</h2>
@@ -233,14 +204,12 @@
             <input id="compraPrecio" type="number" placeholder="Precio">
             <button onclick="guardarCompra()">Guardar Compra</button>
           </div>
-
           <div class="modulo">
             <h2>Registrar Gasto</h2>
             <input id="gastoDescripcion" type="text" placeholder="Descripción del Gasto">
             <input id="gastoMonto" type="number" placeholder="Monto del Gasto">
             <button onclick="guardarGasto()">Guardar Gasto</button>
           </div>
-
           <div class="modulo" id="modulo-liquidacion">
             <h2>Liquidación del Día</h2>
             <div class="tabla-scroll">
@@ -252,21 +221,20 @@
           </div>
         </div>
       </div>
-
       <datalist id="productosList"></datalist>
     </div>
   </div>
 
-  <!-- Script con funcionalidades (sin cambios respecto al comportamiento anterior) -->
+  <!-- Mensaje visual -->
+  <div class="mensaje" id="mensajeExito">Operación guardada exitosamente ✅</div>
+
   <script>
-    // Variables de almacenamiento
     let productos = JSON.parse(localStorage.getItem('productos')) || [];
     let ventas = JSON.parse(localStorage.getItem('ventas')) || [];
     let gastos = JSON.parse(localStorage.getItem('gastos')) || [];
     let compras = JSON.parse(localStorage.getItem('compras')) || [];
     let baseInicial = parseFloat(localStorage.getItem('baseInicial')) || 0;
 
-    // Mostrar el módulo activo
     function mostrarModulo(modulo) {
       document.getElementById('modulo-productos').style.display = 'none';
       document.getElementById('modulo-ventas').style.display = 'none';
@@ -279,6 +247,13 @@
       } else if (modulo === 'productos') {
         document.getElementById('modulo-productos').style.display = 'block';
       }
+    }
+
+    function mostrarMensaje(texto = 'Operación guardada exitosamente ✅') {
+      const mensaje = document.getElementById('mensajeExito');
+      mensaje.textContent = texto;
+      mensaje.style.display = 'block';
+      setTimeout(() => mensaje.style.display = 'none', 2000);
     }
 
     function actualizarDatalist() {
@@ -297,6 +272,7 @@
         baseInicial = nuevaBase;
         localStorage.setItem('baseInicial', baseInicial);
         actualizarLiquidacion();
+        mostrarMensaje("Base del día actualizada ✅");
       } else {
         alert("Por favor ingresa un valor válido para la base.");
       }
@@ -308,10 +284,10 @@
       if (nombre && marca) {
         productos.push({ nombre, marca, cantidad: 0, precio: 0 });
         localStorage.setItem('productos', JSON.stringify(productos));
-        alert('Producto guardado');
         document.getElementById('nombreProducto').value = '';
         document.getElementById('marcaProducto').value = '';
         actualizarDatalist();
+        mostrarMensaje("Producto guardado exitosamente ✅");
       }
     }
 
@@ -332,6 +308,10 @@
       renderizarInventario();
       renderizarVentasDelDia();
       actualizarLiquidacion();
+      document.getElementById('ventaProducto').value = '';
+      document.getElementById('ventaCantidad').value = '';
+      document.getElementById('ventaPrecio').value = '';
+      mostrarMensaje("Venta guardada exitosamente ✅");
     }
 
     function guardarCompra() {
@@ -353,6 +333,10 @@
       renderizarInventario();
       actualizarDatalist();
       actualizarLiquidacion();
+      document.getElementById('compraProducto').value = '';
+      document.getElementById('compraCantidad').value = '';
+      document.getElementById('compraPrecio').value = '';
+      mostrarMensaje("Compra guardada exitosamente ✅");
     }
 
     function guardarGasto() {
@@ -364,6 +348,7 @@
       document.getElementById('gastoDescripcion').value = '';
       document.getElementById('gastoMonto').value = '';
       actualizarLiquidacion();
+      mostrarMensaje("Gasto guardado exitosamente ✅");
     }
 
     function renderizarInventario() {
@@ -394,13 +379,7 @@
       const tbody = document.getElementById('tabla-liquidacion');
       tbody.innerHTML = '';
       const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${baseInicial}</td>
-        <td>${totalVentas}</td>
-        <td>${totalCompras}</td>
-        <td>${totalGastos}</td>
-        <td>${balance}</td>
-      `;
+      tr.innerHTML = `<td>${baseInicial}</td><td>${totalVentas}</td><td>${totalCompras}</td><td>${totalGastos}</td><td>${balance}</td>`;
       tbody.appendChild(tr);
     }
 
@@ -415,6 +394,7 @@
       renderizarVentasDelDia();
       actualizarLiquidacion();
       actualizarDatalist();
+      mostrarMensaje("Todos los datos han sido limpiados 🧹");
     }
   </script>
 </body>
