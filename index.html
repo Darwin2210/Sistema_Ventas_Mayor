@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Punto de Venta</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
       font-family: sans-serif;
@@ -14,13 +17,12 @@
     .main {
       display: flex;
       min-height: 100vh;
-      flex-wrap: nowrap;
+      flex-direction: row;
     }
     .menu-lateral {
       width: 200px;
       background-color: #111;
       padding: 20px;
-      box-sizing: border-box;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -30,7 +32,6 @@
       flex-direction: column;
     }
     .menu-lateral button {
-      display: block;
       width: 100%;
       padding: 10px;
       margin-bottom: 10px;
@@ -45,26 +46,25 @@
       display: flex;
       flex-direction: column;
       padding: 20px;
-      box-sizing: border-box;
       overflow: hidden;
     }
     .modulo-principal-ventas {
       display: flex;
       flex-direction: column;
-      overflow: hidden;
     }
-    .modulo-superior, .modulo-inferior, .modulo-medio {
+    .modulo-superior,
+    .modulo-inferior {
       display: flex;
       gap: 20px;
+      flex-wrap: wrap;
       margin-top: 20px;
     }
     .modulo {
       background-color: #1e1e1e;
       padding: 15px;
       border-radius: 10px;
-      flex: 1;
-      min-width: 300px;
-      max-height: 350px;
+      flex: 1 1 300px;
+      max-height: 400px;
       overflow-y: auto;
     }
     .modulo h2 {
@@ -79,7 +79,6 @@
       border: none;
       background-color: #444;
       color: #fff;
-      box-sizing: border-box;
     }
     button {
       background-color: #007bff;
@@ -110,6 +109,48 @@
     #modulo-ventas {
       display: none;
     }
+
+    @media (max-width: 768px) {
+      .main {
+        flex-direction: column;
+      }
+      .menu-lateral {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 10px;
+        justify-content: center;
+        gap: 10px;
+      }
+      .menu-superior {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .menu-lateral button {
+        flex: 1 1 150px;
+      }
+      .contenido-principal {
+        padding: 10px;
+      }
+      .modulo {
+        max-height: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .modulo-superior,
+      .modulo-inferior {
+        flex-direction: column;
+      }
+      .menu-superior {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .menu-lateral button {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -118,15 +159,15 @@
       <div class="menu-superior">
         <button onclick="mostrarModulo('ventas')">Registrar Ventas</button>
         <button onclick="mostrarModulo('productos')">Registrar Productos</button>
-        <button onclick="agregarBase()">Añadir Base del Día</button> <!-- Botón para adicionar base -->
+        <button onclick="agregarBase()">Añadir Base del Día</button>
       </div>
-      <button onclick="limpiarDatos()" style="background-color: red; margin-top: 20px;">🗑 Limpiar Datos</button>
+      <button onclick="limpiarDatos()" style="background-color: red;">🗑 Limpiar Datos</button>
     </div>
     <div class="contenido-principal">
       <div id="modulo-productos" class="modulo">
         <h2>Registrar Producto</h2>
-        <input id="nombreProducto" type="text" placeholder="Nombre del Producto">
-        <input id="marcaProducto" type="text" placeholder="Marca">
+        <input id="nombreProducto" type="text" placeholder="Nombre del Producto" />
+        <input id="marcaProducto" type="text" placeholder="Marca" />
         <button onclick="guardarProducto()">Guardar Producto</button>
       </div>
 
@@ -134,9 +175,9 @@
         <div class="modulo-superior">
           <div class="modulo">
             <h2>Registrar Venta</h2>
-            <input id="ventaProducto" type="text" placeholder="Nombre del Producto" list="productosList">
-            <input id="ventaCantidad" type="number" placeholder="Cantidad">
-            <input id="ventaPrecio" type="number" placeholder="Precio de Venta">
+            <input id="ventaProducto" type="text" placeholder="Nombre del Producto" list="productosList" />
+            <input id="ventaCantidad" type="number" placeholder="Cantidad" />
+            <input id="ventaPrecio" type="number" placeholder="Precio de Venta" />
             <button onclick="guardarVenta()">Guardar Venta</button>
           </div>
           <div class="modulo">
@@ -158,18 +199,19 @@
             </div>
           </div>
         </div>
+
         <div class="modulo-inferior">
           <div class="modulo">
             <h2>Registrar Compra</h2>
-            <input id="compraProducto" type="text" placeholder="Nombre del Producto" list="productosList">
-            <input id="compraCantidad" type="number" placeholder="Cantidad">
-            <input id="compraPrecio" type="number" placeholder="Precio">
+            <input id="compraProducto" type="text" placeholder="Nombre del Producto" list="productosList" />
+            <input id="compraCantidad" type="number" placeholder="Cantidad" />
+            <input id="compraPrecio" type="number" placeholder="Precio" />
             <button onclick="guardarCompra()">Guardar Compra</button>
           </div>
           <div class="modulo">
             <h2>Registrar Gasto</h2>
-            <input id="gastoDescripcion" type="text" placeholder="Descripción del Gasto">
-            <input id="gastoMonto" type="number" placeholder="Monto del Gasto">
+            <input id="gastoDescripcion" type="text" placeholder="Descripción del Gasto" />
+            <input id="gastoMonto" type="number" placeholder="Monto del Gasto" />
             <button onclick="guardarGasto()">Guardar Gasto</button>
           </div>
           <div class="modulo" id="modulo-liquidacion">
@@ -187,6 +229,7 @@
     </div>
   </div>
 
+  <!-- Scripts JS -->
   <script>
     let productos = JSON.parse(localStorage.getItem('productos')) || [];
     let ventas = JSON.parse(localStorage.getItem('ventas')) || [];
