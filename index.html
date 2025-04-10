@@ -295,4 +295,104 @@
     function guardarVenta() {
       const nombre = document.getElementById('ventaProducto').value.trim();
       const cantidad = parseInt(document.getElementById('ventaCantidad').value);
-      const precio = parseFloat(document.getElementById('venta
+      const precio = parseFloat(document.getElementById('ventaPrecio').value);
+      if (!nombre || isNaN(cantidad) || isNaN(precio)) return;
+      const producto = productos.find(p => p.nombre === nombre);
+      if (!producto || producto.cantidad < cantidad) {
+        alert('No hay suficiente inventario.');
+        return;
+      }
+      producto.cantidad -= cantidad;
+      ventas.push({ nombre, cantidad, precio });
+      localStorage.setItem('productos', JSON.stringify(productos));
+      localStorage.setItem('ventas', JSON.stringify(ventas));
+      renderizarInventario();
+      renderizarVentasDelDia();
+      actualizarLiquidacion();
+    }
+
+    function guardarCompra() {
+      const nombre = document.getElementById('compraProducto').value.trim();
+      const cantidad = parseInt(document.getElementById('compraCantidad').value);
+      const precio = parseFloat(document.getElementById('compraPrecio').value);
+      if (!nombre || isNaN(cantidad) || isNaN(precio)) return;
+      let producto = productos.find(p => p.nombre === nombre);
+      if (producto) {
+        producto.cantidad += cantidad;
+        producto.precio = precio;
+      } else {
+        producto = { nombre, marca: '', cantidad, precio };
+        productos.push(producto);
+      }
+      compras.push({ nombre, cantidad, precio });
+      localStorage.setItem('productos', JSON.stringify(productos));
+      localStorage.setItem('compras', JSON.stringify(compras));
+      renderizarInventario();
+      actualizarDatalist();
+      actualizarLiquidacion();
+    }
+
+    function guardarGasto() {
+      const descripcion = document.getElementById('gastoDescripcion').value.trim();
+      const monto = parseFloat(document.getElementById('gastoMonto').value);
+      if (!descripcion || isNaN(monto)) return;
+      gastos.push({ descripcion, monto });
+      localStorage.setItem('gastos', JSON.stringify(gastos));
+      document.getElementById('gastoDescripcion').value = '';
+      document.getElementById('gastoMonto').value = '';
+      actualizarLiquidacion();
+    }
+
+    function renderizarInventario() {
+      const tbody = document.getElementById('tabla-inventario');
+      tbody.innerHTML = '';
+      productos.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${p.nombre}</td><td>${p.marca}</td><td>${p.cantidad}</td><td>${p.precio}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderizarVentasDelDia() {
+      const tbody = document.getElementById('tabla-ventas-dia');
+      tbody.innerHTML = '';
+      ventas.forEach(v => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${v.nombre}</td><td>${v.cantidad}</td><td>${v.precio}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function actualizarLiquidacion() {
+      const totalVentas = ventas.reduce((total, v) => total + (v.cantidad * v.precio), 0);
+      const totalCompras = compras.reduce((total, c) => total + (c.cantidad * c.precio), 0);
+      const totalGastos = gastos.reduce((total, g) => total + g.monto, 0);
+      const balance = baseInicial + totalVentas - totalCompras - totalGastos;
+      const tbody = document.getElementById('tabla-liquidacion');
+      tbody.innerHTML = '';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${baseInicial}</td>
+        <td>${totalVentas}</td>
+        <td>${totalCompras}</td>
+        <td>${totalGastos}</td>
+        <td>${balance}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    function limpiarDatos() {
+      localStorage.clear();
+      productos = [];
+      ventas = [];
+      gastos = [];
+      compras = [];
+      baseInicial = 0;
+      renderizarInventario();
+      renderizarVentasDelDia();
+      actualizarLiquidacion();
+      actualizarDatalist();
+    }
+  </script>
+</body>
+</html>
